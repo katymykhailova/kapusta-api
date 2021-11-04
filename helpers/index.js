@@ -1,4 +1,4 @@
-const sendSuccessRes = require("./sendSuccessRes");
+const sendSuccessRes = require('./sendSuccessRes');
 
 module.exports = {
   sendSuccessRes,

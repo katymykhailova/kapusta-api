@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
-const { User } = require("../models");
+const { User } = require('../models');
 
 const { SECRET_KEY } = process.env;
 
@@ -8,19 +8,19 @@ const authenticate = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
     res.status(401).json({
-      status: "error",
+      status: 'error',
       code: 401,
-      message: "Not authorized",
+      message: 'Not authorized',
     });
     return;
   }
 
-  const [bearer, token] = authorization.split(" ");
-  if (bearer !== "Bearer") {
+  const [bearer, token] = authorization.split(' ');
+  if (bearer !== 'Bearer') {
     res.status(401).json({
-      status: "error",
+      status: 'error',
       code: 401,
-      message: "Not authorized",
+      message: 'Not authorized',
     });
     return;
   }
@@ -30,9 +30,9 @@ const authenticate = async (req, res, next) => {
     const user = await User.findById(_id);
     if (!user.token) {
       res.status(401).json({
-        status: "error",
+        status: 'error',
         code: 401,
-        message: "Not authorized",
+        message: 'Not authorized',
       });
       return;
     }
@@ -40,9 +40,9 @@ const authenticate = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(401).json({
-      status: "error",
+      status: 'error',
       code: 401,
-      message: "Not authorized",
+      message: 'Not authorized',
     });
   }
 };
