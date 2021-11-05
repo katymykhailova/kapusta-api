@@ -5,7 +5,7 @@ const { yupUserSchema } = require('../../models/user');
 const {
   controllerWrapper,
   validation,
-  //   authenticate,
+  authenticate,
 } = require('../../middlewares');
 
 router.post(
@@ -14,6 +14,6 @@ router.post(
   controllerWrapper(ctrl.signup),
 );
 router.post('/login', validation(yupUserSchema), controllerWrapper(ctrl.login));
-// router.get('/logout', authenticate, controllerWrapper(ctrl.logout));
-// router.get('/current', authenticate, controllerWrapper(ctrl.getCurrentUser));
+router.get('/logout', authenticate, controllerWrapper(ctrl.logout));
+
 module.exports = router;
