@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../../controllers/auth');
-const {
-  googleAuth,
-  googleRedirect,
-} = require('../../controllers/auth/googleAuth');
 const { yupUserSchema } = require('../../models/user');
 const {
   controllerWrapper,
@@ -20,8 +16,8 @@ router.post(
 router.post('/login', validation(yupUserSchema), controllerWrapper(ctrl.login));
 router.get('/logout', authenticate, controllerWrapper(ctrl.logout));
 
-router.get('/google', controllerWrapper(googleAuth));
+router.get('/google', controllerWrapper(ctrl.googleAuth));
 
-router.get('/google-redirect', controllerWrapper(googleRedirect));
+router.get('/google-redirect', controllerWrapper(ctrl.googleRedirect));
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const queryString = require('query-string');
 const axios = require('axios');
 
-exports.googleAuth = async (req, res) => {
+const googleAuth = async (req, res) => {
   const stringifiedParams = queryString.stringify({
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri: `${process.env.BASE_URL}/auth/google-redirect`,
@@ -13,12 +13,13 @@ exports.googleAuth = async (req, res) => {
     access_type: 'offline',
     prompt: 'consent',
   });
+  console.log('hello me');
   return res.redirect(
     `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`,
   );
 };
 
-exports.googleRedirect = async (req, res) => {
+const googleRedirect = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
   const urlParams = queryString.parse(urlObj.search);
@@ -50,3 +51,5 @@ exports.googleRedirect = async (req, res) => {
     `${process.env.FRONTEND_URL}?email=${userData.data.email}`,
   );
 };
+
+module.exports = { googleAuth, googleRedirect };
