@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   controllerWrapper,
   // validation,
-  // authenticate,
+  authenticate,
 } = require('../../middlewares');
 const ctrl = require('../../controllers/transactions');
 
@@ -14,7 +14,7 @@ const ctrl = require('../../controllers/transactions');
 
 router.post(
   '/',
-  // authenticate,
+  authenticate,
   // validation(yupTransactionSchema),
   controllerWrapper(ctrl.addTransaction),
 );
