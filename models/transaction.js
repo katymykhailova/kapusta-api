@@ -31,10 +31,10 @@ const transactionSchema = Schema(
       type: Number,
       required: true,
     },
-    // owner: {
-    //   type: Schema.ObjectId,
-    //   ref: 'user',
-    // },
+    owner: {
+      type: Schema.ObjectId,
+      ref: 'user',
+    },
   },
   { versionKey: false, timestamps: true },
 );
