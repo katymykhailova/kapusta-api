@@ -32,7 +32,7 @@ const userSchema = Schema(
 );
 
 const yupUserSchema = yup.object({
-  username: yup.string().required('Это обязательное поле'),
+  username: yup.string(),
   email: yup.string().email().required('Это обязательное поле'),
   password: yup.string().required('Это обязательное поле'),
 });
