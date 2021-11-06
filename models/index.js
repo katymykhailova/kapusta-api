@@ -1,2 +1,3 @@
 const { User } = require('./user');
-module.exports = { User };
+const { Transaction } = require('./transaction');
+module.exports = { User, Transaction };
