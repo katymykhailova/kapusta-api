@@ -1,14 +1,6 @@
 const { Schema, model } = require('mongoose');
 const yup = require('yup');
 
-const CATEGORIES = {
-  FOOD: 'food',
-  CAR: 'car',
-  DEVELOPMENT: 'development',
-  KIDS: 'kids',
-  HOME: 'home',
-};
-
 const transactionSchema = Schema(
   {
     type: {
@@ -20,8 +12,8 @@ const transactionSchema = Schema(
       required: true,
     },
     category: {
-      type: String,
-      enum: Object.values(CATEGORIES),
+      type: Schema.ObjectId,
+      ref: 'category',
     },
     amount: {
       type: Number,
