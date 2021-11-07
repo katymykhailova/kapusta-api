@@ -27,6 +27,10 @@ const userSchema = Schema(
         return gr.url(this.email, { s: '250' }, true);
       },
     },
+    balance: {
+      type: Number,
+      default: null,
+    },
   },
   { versionKey: false, timestamps: true },
 );
