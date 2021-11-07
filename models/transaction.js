@@ -32,7 +32,10 @@ const transactionSchema = Schema(
 );
 
 const yupTransactionSchema = yup.object({
-  amount: yup.number().required('Обязательное поле'),
+  amount: yup
+    .number()
+    .required('Обязательное поле')
+    .positive('Только положительное число'),
   description: yup.string().required('Обязательное поле'),
   date: yup.date().required('Обязательное поле'),
   type: yup.boolean().required('Обязательное поле'),
