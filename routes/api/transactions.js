@@ -3,33 +3,30 @@ const router = express.Router();
 
 const {
   controllerWrapper,
-  // validation,
+  validation,
   authenticate,
 } = require('../../middlewares');
 const ctrl = require('../../controllers/transactions');
-
-// router.get('/', authenticate, controllerWrapper(ctrl.Transactions));
-
-// router.get('/:transactionId', authenticate, controllerWrapper(ctrl.getTransactionById));
+const { yupTransactionSchema } = require('../../models/transaction');
 
 router.post(
   '/',
   authenticate,
-  // validation(yupTransactionSchema),
+  validation(yupTransactionSchema),
   controllerWrapper(ctrl.addTransaction),
 );
 
-// router.delete(
-//   '/:transactionId',
-//   authenticate,
-//   controllerWrapper(ctrl.removeTransaction),
-// );
+router.delete(
+  '/:transactionId',
+  authenticate,
+  controllerWrapper(ctrl.removeTransaction),
+);
 
-// router.put(
-//   '/:transactionId',
-//   authenticate,
-//   validation(yupTransactionSchema),
-//   controllerWrapper(ctrl.updateTransaction),
-// );
+router.put(
+  '/:transactionId',
+  authenticate,
+  validation(yupTransactionSchema),
+  controllerWrapper(ctrl.updateTransaction),
+);
 
 module.exports = router;
