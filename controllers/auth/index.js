@@ -4,6 +4,8 @@ const logout = require('./logout');
 const { googleAuth, googleRedirect } = require('./googleAuth');
 const findByEmail = require('./findUserByEmail');
 const updateToken = require('./updateToken.js');
+const updateBalance = require('./updateBalanceById');
+const getProfile = require('./getProfileById');
 
 module.exports = {
   signup,
@@ -13,4 +15,6 @@ module.exports = {
   googleRedirect,
   findByEmail,
   updateToken,
+  updateBalance,
+  getProfile,
 };

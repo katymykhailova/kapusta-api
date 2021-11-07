@@ -20,4 +20,7 @@ router.get('/google', controllerWrapper(ctrl.googleAuth));
 
 router.get('/google-redirect', controllerWrapper(ctrl.googleRedirect));
 
+router.get('/current', authenticate, ctrl.getProfile);
+router.put('/balance', authenticate, ctrl.updateBalance);
+
 module.exports = router;
