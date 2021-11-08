@@ -58,7 +58,7 @@ const googleRedirect = async (req, res) => {
   await updateToken(user.id, token);
   console.log(user.token);
 
-  return res.redirect(`${process.env.FRONTEND_URL}/transactions`);
+  return res.redirect(`${process.env.FRONTEND_URL}/home`);
 
   // return res.redirect(
   //   `${process.env.FRONTEND_URL}?email=${userData.data.email}`,
