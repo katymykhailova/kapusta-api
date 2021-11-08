@@ -5,6 +5,7 @@ const cors = require('cors');
 const categoriesRouter = require('./routes/api/categories');
 const authRouter = require('./routes/api/auth');
 const transactionsRouter = require('./routes/api/transactions');
+const reportRouter = require('./routes/api/report');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.static('public'));
 app.use('/api/categories', categoriesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/transactions', transactionsRouter);
+app.use('/api/report', reportRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
