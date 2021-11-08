@@ -9,15 +9,10 @@ const {
 
 const ctrl = require('../../controllers/report');
 
-// ========================
-console.log('in api/report');
-// ========================
-const print = () => console.log('hello');
 router.get(
   '/',
   authenticate,
   // validation(yupTransactionSchema),
-  // print,
   controllerWrapper(ctrl.getYearByMonthAndType),
 );
 
