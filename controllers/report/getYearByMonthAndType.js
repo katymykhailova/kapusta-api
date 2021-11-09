@@ -1,4 +1,4 @@
-// for ex: http://localhost:3000/api/transactions/i-2021 ('i[nput]-доход, [o]utput-расход:')
+// for ex: http://localhost:3000/api/report?i=2021 ('i[nput]-доход, [o]utput-расход:')
 const { sendSuccessRes } = require('../../helpers');
 const { Transaction } = require('../../models');
 const getYearByMonthAndType = async (req, res) => {  // console.log("in getYearByMonthAndType");  // console.log("i/o:",Object.keys(req.query)[0]);
