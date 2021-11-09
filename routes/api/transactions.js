@@ -29,4 +29,11 @@ router.put(
   controllerWrapper(ctrl.updateTransaction),
 );
 
+router.get(
+  '/',
+  authenticate,
+  // validation(),
+  controllerWrapper(ctrl.getTransactionsByMonth),
+);
+
 module.exports = router;
