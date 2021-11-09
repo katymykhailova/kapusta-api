@@ -18,8 +18,8 @@ const login = async (req, res) => {
     _id,
   };
   const token = jwt.sign(payload, SECRET_KEY);
-  await User.findByIdAndUpdate(_id, { token });
-  sendSuccessRes(res, { token }, 201);
+  const newUser = await User.findByIdAndUpdate(_id, { token });
+  sendSuccessRes(res, { user: newUser }, 201);
 };
 
 module.exports = login;

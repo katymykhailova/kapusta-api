@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Kapu$ta docs",
     "description": "Kapu$ta backend documentation",
     "license": {
@@ -18,12 +18,12 @@
       "description": "Authorization endpoints"
     },
     {
-      "name": "Transactions",
-      "description": "Transactions endpoints"
-    },
-    {
       "name": "Categories",
       "description": "Categories endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions endpoints"
     },
     {
       "name": "Report",
@@ -258,6 +258,38 @@
           }
         }
       }
+    },
+    "/api/report/": {
+      "get": {
+        "tags": ["Report"],
+        "summary": "Report of the year by months ",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "i",
+            "in": "query",
+            "description": "Input -income",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
     }
   },
 
@@ -361,14 +393,57 @@
       "AuthorizationResponse": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string",
+            "description": "User's name",
+            "format": "name",
+            "example": "User"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
           "token": {
             "type": "string",
             "description": "User's token",
-            "format": "jwt"
-          }
+            "format": "jwt",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "format": "number",
+            "example": "12456"
+          },
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          },
+          "avatar": {
+            "type": "picture",
+            "description": "User's avatar",
+            "format": "link"
+          },
+          "createdAt": { "description": "date of creating" },
+          "updatedAt": { "description": "date of updating" }
         },
         "example": {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+          "username": "User",
+          "email": "user@test.com",
+          "password": "123t456e789st",
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
+          "balance": null,
+          "_id": "987654321test",
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250",
+          "createdAt": "2021-11-09T13:54:48.931Z",
+          "updatedAt": "2021-11-09T13:54:48.931Z"
         }
       },
       "CurrentUserResponse": {
@@ -502,13 +577,28 @@
           "createdAt": "2021-11-09T18:58:30.974Z",
           "updatedAt": "2021-11-09T18:58:30.974Z"
         }
-      }
-    },
-    "securitySchemes": {
-      "Bearer": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+      },
+      "ReportResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "sumByMonth": {
+              "type": "array",
+              "description": "Balance by month"
+            }
+          }
+        },
+        "example": {
+          "sumsByMonth": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }
+      },
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
       }
     }
   }
