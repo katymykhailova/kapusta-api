@@ -47,7 +47,6 @@
             }
           }
         },
-
         "responses": {
           "201": {
             "description": "Successful operation",
@@ -188,13 +187,73 @@
             "description": "Bad request",
             "content": {}
           },
-
           "401": {
             "description": "Unauthorized",
             "content": {}
           },
           "500": {
             "description": "Not correct value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/categories/": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "All categories list",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Add categories ",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Categories object addition",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCategoriesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {}
           }
         }
@@ -213,23 +272,6 @@
             "description": "User's name",
             "example": "User"
           },
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@test.com"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "123t456e789st"
-          }
-        }
-      },
-      "AuthorizationRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
           "email": {
             "type": "string",
             "description": "User's email",
@@ -299,6 +341,23 @@
           "updatedAt": "2021-11-09T13:54:48.931Z"
         }
       },
+      "AuthorizationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@test.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          }
+        }
+      },
       "AuthorizationResponse": {
         "type": "object",
         "properties": {
@@ -363,6 +422,85 @@
           "_id": "987654321test",
           "email": "user@test.com",
           "balance": 45789
+        }
+      },
+      "CategoriesResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Categories id",
+              "example": "987654321test"
+            },
+            "name": {
+              "type": "string",
+              "description": "Categories name",
+              "format": "name",
+              "examle": "продукты"
+            },
+            "createdAt": { "description": "date of creating" },
+            "updatedAt": { "description": "date of updating" }
+          }
+        },
+        "example": [
+          {
+            "_id": "987654321test",
+            "name": "Продукты",
+            "createdAt": "2021-11-06T22:49:30.418Z",
+            "updatedAt": "2021-11-06T22:49:30.418Z"
+          },
+          {
+            "_id": "618707084d99133d9513cfeb",
+            "name": "Алкоголь",
+            "createdAt": "2021-11-06T22:51:52.332Z",
+            "updatedAt": "2021-11-06T22:51:52.332Z"
+          },
+          {
+            "_id": "618707614d99133d9513cffd",
+            "name": "Все для дома",
+            "createdAt": "2021-11-06T22:53:21.967Z",
+            "updatedAt": "2021-11-06T22:53:21.967Z"
+          }
+        ]
+      },
+      "AddCategoriesRequest": {
+        "type": "object",
+        "required": "name",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Categories name",
+            "example": "Дань"
+          }
+        },
+        "example": {
+          "name": "Дань"
+        }
+      },
+      "AddCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Categories name",
+            "format": "name",
+            "example": "User"
+          },
+          "_id": {
+            "type": "string",
+            "description": "Categories id",
+            "example": "987654321test"
+          },
+          "createdAt": { "description": "date of creating" },
+          "updatedAt": { "description": "date of updating" }
+        },
+        "example": {
+          "name": "home",
+          "_id": "618ac4d6afd884baa98ac1d9",
+          "createdAt": "2021-11-09T18:58:30.974Z",
+          "updatedAt": "2021-11-09T18:58:30.974Z"
         }
       }
     },
