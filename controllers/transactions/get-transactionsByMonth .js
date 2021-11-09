@@ -1,5 +1,4 @@
 // for ex: http://localhost:3000/api/transactions?202101(YYYYMM)
-
 const { sendSuccessRes } = require('../../helpers');
 const { Transaction } = require('../../models');
 
@@ -19,39 +18,11 @@ const getTransactionsByMonth = async (req, res) => {
       date: { $gte: fromDate, $lt: toDate },
     },
     {
-      _id: 0,
       owner: 0,
       createdAt: 0,
       updatedAt: 0,
     },
   ).sort({ date: 1 });
-
-  // ============ debug block =================
-  // удалить. раскоментировать строку за ним
-  // const debugResult = await Transaction.find(
-  //   {
-  //     // фильтация (без полей - все)
-  //     // type: typeTrAct, // owner: '61879723dcf34c690cabb318',
-  //     owner: req.user._id,
-  //     date: { $gte: fromDate, $lt: toDate },
-  //     // date: { $gt: fromDate },
-  //   },
-  //   {
-  //     //список полей, забираемых из БД
-  //     _id: 0,
-  //     // date: 1,
-  //     // category: 1,
-  //     // description: 1,
-  //     // type: 1,
-  //     // amount: 1,
-  //     // owner: 1,
-  //     createdAt: 0,
-  //     updatedAt: 0,
-  //   }, // {date:1}
-  // ).sort({ date: 1 });
-  // // console.log("dr0:",debugResult[0]);
-  // sendSuccessRes(res, { tActionsMonth: debugResult });
-  // ----------- end debug block-----------------
 
   sendSuccessRes(res, { tActionsMonth: result });
 };
