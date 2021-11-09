@@ -15,6 +15,6 @@ const updateUserById = async (req, res) => {
   if (!result) {
     throw new NotFound(`Contact with id=${_id} not found`);
   }
-  sendSuccessRes(res, { result });
+  sendSuccessRes(res, { balance });
 };
 module.exports = updateUserById;

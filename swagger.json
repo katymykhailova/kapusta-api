@@ -24,6 +24,10 @@
     {
       "name": "Categories",
       "description": "Categories endpoints"
+    },
+    {
+      "name": "Report",
+      "description": "Report endpoints"
     }
   ],
   "paths": {
@@ -31,10 +35,7 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User registration",
-
         "parameters": [],
-        "security": [{ "Bearer": [] }],
-
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -72,6 +73,132 @@
           }
         }
       }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User authorization",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authorization's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorizationRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation, created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (Email or password is wrong)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Successful"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/current": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get current user",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/balance": {
+      "put": {
+        "tags": ["Auth"],
+        "summary": "Update balance",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "User's balance",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BalanceRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Not correct value",
+            "content": {}
+          }
+        }
+      }
     }
   },
 
@@ -79,41 +206,164 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
+        "required": ["username", "email", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "User's name",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@test.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          }
+        }
+      },
+      "AuthorizationRequest": {
+        "type": "object",
         "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@test.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "User's name",
+            "format": "name",
+            "example": "User"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "format": "jwt",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "format": "number",
+            "example": "12456"
+          },
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          },
+          "avatar": {
+            "type": "picture",
+            "description": "User's avatar",
+            "format": "link"
+          },
+          "createdAt": { "description": "date of creating" },
+          "updatedAt": { "description": "date of updating" }
+        },
+        "example": {
+          "username": "User",
+          "email": "user@test.com",
+          "password": "123t456e789st",
+          "token": null,
+          "balance": null,
+          "_id": "987654321test",
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250",
+          "createdAt": "2021-11-09T13:54:48.931Z",
+          "updatedAt": "2021-11-09T13:54:48.931Z"
+        }
+      },
+      "AuthorizationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "format": "jwt"
+          }
+        },
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+        }
+      },
+      "CurrentUserResponse": {
+        "type": "object",
         "properties": {
           "email": {
             "type": "string",
             "description": "User's email",
             "format": "email"
           },
-          "password": {
+          "_id": {
             "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
-          }
-        }
-      },
-      "RegistrationResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
-            }
+            "description": "User's id",
+            "example": "987654321test"
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 45789
           }
         },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
+        "example": {
+          "_id": "987654321test",
+          "email": "user@test.com",
+          "balance": 45789
+        }
+      },
+      "BalanceRequest": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 45789
+          }
+        },
+        "example": {
+          "balance": 45789
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 45789
+          }
+        },
+        "example": {
+          "_id": "987654321test",
+          "email": "user@test.com",
+          "balance": 45789
+        }
       }
     },
     "securitySchemes": {
