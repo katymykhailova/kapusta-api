@@ -1,10 +1,9 @@
-// for ex: http://localhost:3000/api/expenses?202101(YYYYMM)
+// for ex: http://localhost:3000/api/transactions?202101(YYYYMM)
 
 const { sendSuccessRes } = require('../../helpers');
 const { Transaction } = require('../../models');
 
-const monthDetalReport = async (req, res) => {
-  // console.log('in monthDetalReport');
+const getTransactionsByMonth = async (req, res) => {
   const query = Object.keys(req.query)[0];
   const year = query.substr(0, 4);
   const month = query[4] + query[5];
@@ -21,18 +20,20 @@ const monthDetalReport = async (req, res) => {
     },
     {
       _id: 0,
+      owner: 0,
       createdAt: 0,
       updatedAt: 0,
     },
   ).sort({ date: 1 });
+
   // ============ debug block =================
-  // удалить и раскоментировать строку за ним
+  // удалить. раскоментировать строку за ним
   // const debugResult = await Transaction.find(
   //   {
   //     // фильтация (без полей - все)
   //     // type: typeTrAct, // owner: '61879723dcf34c690cabb318',
   //     owner: req.user._id,
-  //     date: { $gte: fromDate, $lt: toDate }, 
+  //     date: { $gte: fromDate, $lt: toDate },
   //     // date: { $gt: fromDate },
   //   },
   //   {
@@ -55,4 +56,4 @@ const monthDetalReport = async (req, res) => {
   sendSuccessRes(res, { tActionsMonth: result });
 };
 
-module.exports = monthDetalReport;
+module.exports = getTransactionsByMonth;
