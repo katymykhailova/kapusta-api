@@ -32,7 +32,6 @@ router.put(
 router.get(
   '/',
   authenticate,
-  // validation(),
   controllerWrapper(ctrl.getTransactionsByMonth),
 );
 

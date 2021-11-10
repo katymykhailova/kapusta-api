@@ -12,7 +12,6 @@ const ctrl = require('../../controllers/report');
 router.get(
   '/',
   authenticate,
-  // validation(yupTransactionSchema),
   controllerWrapper(ctrl.getYearByMonthAndType),
 );
 

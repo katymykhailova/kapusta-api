@@ -9,7 +9,7 @@ const {
 } = require('../../middlewares');
 const ctrl = require('../../controllers/categories');
 
-router.get('/', authenticate, ctrl.getAllCategories);
+router.get('/', authenticate, controllerWrapper(ctrl.getAllCategories));
 router.post(
   '/',
   authenticate,
