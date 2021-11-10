@@ -4,7 +4,7 @@ const { User } = require('../../models');
 
 const getUserById = async (req, res) => {
   const { _id } = req.user;
-  const result = await User.findById(_id, '_id name email balance');
+  const result = await User.findById(_id, '_id username email token avatar balance');
   if (!result) {
     throw new NotFound(`User with id=${_id} not found`);
   }
