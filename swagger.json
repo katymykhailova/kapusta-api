@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Kapu$ta docs",
     "description": "Kapu$ta backend documentation",
     "license": {
@@ -435,6 +435,11 @@
       "AuthorizationResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          },
           "username": {
             "type": "string",
             "description": "User's name",
@@ -463,10 +468,57 @@
             "format": "number",
             "example": "12456"
           },
+          "avatar": {
+            "type": "picture",
+            "description": "User's avatar",
+            "format": "link"
+          }
+        },
+        "example": {
+          "_id": "987654321test",
+          "username": "User",
+          "email": "user@test.com",
+          "password": "123t456e789st",
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
+          "balance": null,
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+        }
+      },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
           "_id": {
             "type": "string",
             "description": "User's id",
             "example": "987654321test"
+          },
+          "username": {
+            "type": "string",
+            "description": "User's name",
+            "format": "name",
+            "example": "User"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "format": "jwt",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "format": "number",
+            "example": "12456"
           },
           "avatar": {
             "type": "picture",
@@ -475,38 +527,13 @@
           }
         },
         "example": {
+          "_id": "987654321test",
           "username": "User",
           "email": "user@test.com",
           "password": "123t456e789st",
           "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
           "balance": null,
-          "_id": "987654321test",
           "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
-        }
-      },
-      "CurrentUserResponse": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "_id": {
-            "type": "string",
-            "description": "User's id",
-            "example": "987654321test"
-          },
-          "balance": {
-            "type": "number",
-            "description": "User's balance",
-            "example": 45789
-          }
-        },
-        "example": {
-          "_id": "987654321test",
-          "email": "user@test.com",
-          "balance": 45789
         }
       },
       "BalanceRequest": {
@@ -532,8 +559,6 @@
           }
         },
         "example": {
-          "_id": "987654321test",
-          "email": "user@test.com",
           "balance": 45789
         }
       },
@@ -605,15 +630,11 @@
             "type": "string",
             "description": "Categories id",
             "example": "987654321test"
-          },
-          "createdAt": { "description": "date of creating" },
-          "updatedAt": { "description": "date of updating" }
+          }
         },
         "example": {
-          "name": "home",
-          "_id": "618ac4d6afd884baa98ac1d9",
-          "createdAt": "2021-11-09T18:58:30.974Z",
-          "updatedAt": "2021-11-09T18:58:30.974Z"
+          "name": "дань",
+          "_id": "618ac4d6afd884baa98ac1d9"
         }
       },
       "ReportResponse": {
