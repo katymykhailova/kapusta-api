@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.1",
+    "version": "1.0.3",
     "title": "Kapu$ta docs",
     "description": "Kapu$ta backend documentation",
     "license": {
@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "http://kapusta-api-project.herokuapp.com/" }],
   "tags": [
     {
       "name": "Auth",
@@ -270,7 +270,26 @@
             "in": "query",
             "description": "Input -income",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "integer",
+              "minimum": 4,
+              "default": 2021,
+              "description": "year",
+              "required": "true"
+            }
+          },
+          {
+            "name": "o",
+            "in": "query",
+            "description": "Ouput -outcome",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 4,
+              "default": 2021,
+              "description": "year",
+              "required": "true"
+            }
           }
         ],
         "responses": {
@@ -357,9 +376,7 @@
             "type": "picture",
             "description": "User's avatar",
             "format": "link"
-          },
-          "createdAt": { "description": "date of creating" },
-          "updatedAt": { "description": "date of updating" }
+          }
         },
         "example": {
           "username": "User",
@@ -430,9 +447,7 @@
             "type": "picture",
             "description": "User's avatar",
             "format": "link"
-          },
-          "createdAt": { "description": "date of creating" },
-          "updatedAt": { "description": "date of updating" }
+          }
         },
         "example": {
           "username": "User",
@@ -449,26 +464,53 @@
       "CurrentUserResponse": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string",
+            "description": "User's name",
+            "format": "name",
+            "example": "User"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
             "format": "email"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "format": "jwt",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "format": "number",
+            "example": "12456"
           },
           "_id": {
             "type": "string",
             "description": "User's id",
             "example": "987654321test"
           },
-          "balance": {
-            "type": "number",
-            "description": "User's balance",
-            "example": 45789
+          "avatar": {
+            "type": "picture",
+            "description": "User's avatar",
+            "format": "link"
           }
         },
         "example": {
           "_id": "987654321test",
+          "username": "User",
           "email": "user@test.com",
-          "balance": 45789
+          "password": "123t456e789st",
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
+          "balance": null,
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
         }
       },
       "BalanceRequest": {
@@ -583,15 +625,13 @@
         "items": {
           "type": "object",
           "properties": {
-            "sumByMonth": {
+            "sums": {
               "type": "array",
               "description": "Balance by month"
             }
           }
         },
-        "example": {
-          "sumsByMonth": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        }
+        "example": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       },
       "securitySchemes": {
         "Bearer": {
