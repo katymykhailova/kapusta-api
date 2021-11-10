@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.3",
+    "version": "1.0.0",
     "title": "Kapu$ta docs",
     "description": "Kapu$ta backend documentation",
     "license": {
@@ -11,19 +11,19 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://kapusta-api-project.herokuapp.com/" }],
+  "servers": [{ "url": "http://localhost:3000" }],
   "tags": [
     {
       "name": "Auth",
       "description": "Authorization endpoints"
     },
     {
-      "name": "Categories",
-      "description": "Categories endpoints"
-    },
-    {
       "name": "Transactions",
       "description": "Transactions endpoints"
+    },
+    {
+      "name": "Categories",
+      "description": "Categories endpoints"
     },
     {
       "name": "Report",
@@ -269,7 +269,6 @@
             "name": "i",
             "in": "query",
             "description": "Input -income",
-            "required": true,
             "schema": {
               "type": "integer",
               "minimum": 4,
@@ -277,12 +276,36 @@
               "description": "year",
               "required": "true"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResponse"
+                }
+              }
+            }
           },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/report": {
+      "get": {
+        "tags": ["Report"],
+        "summary": "Report of the year by months ",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
           {
             "name": "o",
             "in": "query",
-            "description": "Ouput -outcome",
-            "required": true,
+            "description": "Output -Outcome",
             "schema": {
               "type": "integer",
               "minimum": 4,
@@ -376,7 +399,9 @@
             "type": "picture",
             "description": "User's avatar",
             "format": "link"
-          }
+          },
+          "createdAt": { "description": "date of creating" },
+          "updatedAt": { "description": "date of updating" }
         },
         "example": {
           "username": "User",
@@ -456,61 +481,32 @@
           "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
           "balance": null,
           "_id": "987654321test",
-          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250",
-          "createdAt": "2021-11-09T13:54:48.931Z",
-          "updatedAt": "2021-11-09T13:54:48.931Z"
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
         }
       },
       "CurrentUserResponse": {
         "type": "object",
         "properties": {
-          "username": {
-            "type": "string",
-            "description": "User's name",
-            "format": "name",
-            "example": "User"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "123t456e789st"
-          },
           "email": {
             "type": "string",
             "description": "User's email",
             "format": "email"
-          },
-          "token": {
-            "type": "string",
-            "description": "User's token",
-            "format": "jwt",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
-          },
-          "balance": {
-            "type": "number",
-            "description": "User's balance",
-            "format": "number",
-            "example": "12456"
           },
           "_id": {
             "type": "string",
             "description": "User's id",
             "example": "987654321test"
           },
-          "avatar": {
-            "type": "picture",
-            "description": "User's avatar",
-            "format": "link"
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 45789
           }
         },
         "example": {
           "_id": "987654321test",
-          "username": "User",
           "email": "user@test.com",
-          "password": "123t456e789st",
-          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
-          "balance": null,
-          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+          "balance": 45789
         }
       },
       "BalanceRequest": {
@@ -632,13 +628,13 @@
           }
         },
         "example": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      },
-      "securitySchemes": {
-        "Bearer": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
