@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Kapu$ta docs",
     "description": "Kapu$ta backend documentation",
     "license": {
@@ -198,7 +198,7 @@
         }
       }
     },
-    "/api/categories/": {
+    "/api/categories": {
       "get": {
         "tags": ["Categories"],
         "summary": "All categories list",
@@ -259,7 +259,7 @@
         }
       }
     },
-    "/api/report/": {
+    "/api/report": {
       "get": {
         "tags": ["Report"],
         "summary": "Report of the year by months ",
@@ -268,7 +268,7 @@
           {
             "name": "i",
             "in": "query",
-            "description": "Input -income",
+            "description": "Use *i* for income and *o* for outcome",
             "schema": {
               "type": "integer",
               "minimum": 4,
@@ -278,6 +278,7 @@
             }
           }
         ],
+
         "responses": {
           "200": {
             "description": "Success",
@@ -296,38 +297,93 @@
         }
       }
     },
-    "/api/report": {
-      "get": {
-        "tags": ["Report"],
-        "summary": "Report of the year by months ",
+    "/api/transactions": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "User transactions",
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "name": "o",
-            "in": "query",
-            "description": "Output -Outcome",
-            "schema": {
-              "type": "integer",
-              "minimum": 4,
-              "default": 2021,
-              "description": "year",
-              "required": "true"
+        "parameters": [],
+        "requestBody": {
+          "description": "Transactions's object additinal",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionsRequest"
+              }
             }
           }
-        ],
+        },
         "responses": {
-          "200": {
-            "description": "Success",
+          "201": {
+            "description": "Successful operation, created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReportResponse"
+                  "$ref": "#/components/schemas/TransactionsResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (Email or password is wrong)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/transactions/{transactionId}": {
+      "put": {
+        "tags": ["Transactions"],
+        "summary": "User transaction's updating",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "type": "string",
+            "description": "The id of transaction",
+            "example": "618c21bda3001f722c032900"
+          }
+        ],
+        "requestBody": {
+          "description": "Transactions's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionsIdRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (Email or password is wrong)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
             "content": {}
           }
         }
@@ -399,9 +455,7 @@
             "type": "picture",
             "description": "User's avatar",
             "format": "link"
-          },
-          "createdAt": { "description": "date of creating" },
-          "updatedAt": { "description": "date of updating" }
+          }
         },
         "example": {
           "username": "User",
@@ -410,9 +464,7 @@
           "token": null,
           "balance": null,
           "_id": "987654321test",
-          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250",
-          "createdAt": "2021-11-09T13:54:48.931Z",
-          "updatedAt": "2021-11-09T13:54:48.931Z"
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
         }
       },
       "AuthorizationRequest": {
@@ -435,6 +487,11 @@
       "AuthorizationResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          },
           "username": {
             "type": "string",
             "description": "User's name",
@@ -463,10 +520,57 @@
             "format": "number",
             "example": "12456"
           },
+          "avatar": {
+            "type": "picture",
+            "description": "User's avatar",
+            "format": "link"
+          }
+        },
+        "example": {
+          "_id": "987654321test",
+          "username": "User",
+          "email": "user@test.com",
+          "password": "123t456e789st",
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
+          "balance": null,
+          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+        }
+      },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
           "_id": {
             "type": "string",
             "description": "User's id",
             "example": "987654321test"
+          },
+          "username": {
+            "type": "string",
+            "description": "User's name",
+            "format": "name",
+            "example": "User"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "123t456e789st"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "format": "jwt",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k"
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "format": "number",
+            "example": "12456"
           },
           "avatar": {
             "type": "picture",
@@ -475,38 +579,13 @@
           }
         },
         "example": {
+          "_id": "987654321test",
           "username": "User",
           "email": "user@test.com",
           "password": "123t456e789st",
           "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
           "balance": null,
-          "_id": "987654321test",
           "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
-        }
-      },
-      "CurrentUserResponse": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "_id": {
-            "type": "string",
-            "description": "User's id",
-            "example": "987654321test"
-          },
-          "balance": {
-            "type": "number",
-            "description": "User's balance",
-            "example": 45789
-          }
-        },
-        "example": {
-          "_id": "987654321test",
-          "email": "user@test.com",
-          "balance": 45789
         }
       },
       "BalanceRequest": {
@@ -532,8 +611,6 @@
           }
         },
         "example": {
-          "_id": "987654321test",
-          "email": "user@test.com",
           "balance": 45789
         }
       },
@@ -552,9 +629,7 @@
               "description": "Categories name",
               "format": "name",
               "examle": "продукты"
-            },
-            "createdAt": { "description": "date of creating" },
-            "updatedAt": { "description": "date of updating" }
+            }
           }
         },
         "example": [
@@ -605,15 +680,11 @@
             "type": "string",
             "description": "Categories id",
             "example": "987654321test"
-          },
-          "createdAt": { "description": "date of creating" },
-          "updatedAt": { "description": "date of updating" }
+          }
         },
         "example": {
-          "name": "home",
-          "_id": "618ac4d6afd884baa98ac1d9",
-          "createdAt": "2021-11-09T18:58:30.974Z",
-          "updatedAt": "2021-11-09T18:58:30.974Z"
+          "name": "дань",
+          "_id": "618ac4d6afd884baa98ac1d9"
         }
       },
       "ReportResponse": {
@@ -628,6 +699,160 @@
           }
         },
         "example": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "TransactionsRequest": {
+        "type": "object",
+        "required": "name",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "transaction's amount",
+            "format": "number",
+            "example": "45623"
+          },
+          "description": {
+            "type": "string",
+            "description": "description operation",
+            "example": "haus"
+          },
+          "date": {
+            "type": "string",
+            "description": "transaction's date",
+            "example": "2021-11-10T00:00:00.000Z"
+          },
+          "type": {
+            "type": "string",
+            "description": "transaction's type",
+            "example": "true"
+          }
+        },
+        "example": {
+          "amount": 45623,
+          "description": "haus",
+          "date": "2021-11-10",
+          "type": true
+        }
+      },
+      "TransactionsResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "transaction's type",
+            "example": "true"
+          },
+          "date": {
+            "type": "string",
+            "description": "transaction's date",
+            "example": "2021-11-10T00:00:00.000Z"
+          },
+          "amount": {
+            "type": "number",
+            "description": "transaction's amount",
+            "format": "number",
+            "example": "45623"
+          },
+          "description": {
+            "type": "string",
+            "description": "description operation",
+            "example": "haus"
+          },
+          "owner": {
+            "type": "picture",
+            "description": "User-owner transaction",
+            "exapmle": "61example001f722c0328f4"
+          },
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          }
+        },
+        "example": {
+          "type": true,
+          "date": "2021-11-10T00:00:00.000Z",
+          "amount": 45623,
+          "description": "haus",
+          "owner": "61example001f722c0328f4",
+          "_id": "618c21bda3example22c032900"
+        }
+      },
+      "TransactionsIdRequest": {
+        "type": "object",
+        "required": "name",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "transaction's amount",
+            "format": "number",
+            "example": "45623"
+          },
+          "description": {
+            "type": "string",
+            "description": "description operation",
+            "example": "haus"
+          },
+          "date": {
+            "type": "string",
+            "description": "transaction's date",
+            "example": "2021-11-10T00:00:00.000Z"
+          },
+          "type": {
+            "type": "string",
+            "description": "transaction's type",
+            "example": "true"
+          }
+        },
+        "example": {
+          "amount": 45623,
+          "description": "haus",
+          "date": "2021-11-10",
+          "type": true
+        }
+      },
+      "TransactionsIdResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "transaction's type",
+            "example": "true"
+          },
+          "date": {
+            "type": "string",
+            "description": "transaction's date",
+            "example": "2021-11-10T00:00:00.000Z"
+          },
+          "amount": {
+            "type": "number",
+            "description": "transaction's amount",
+            "format": "number",
+            "example": "45623"
+          },
+          "description": {
+            "type": "string",
+            "description": "description operation",
+            "example": "haus"
+          },
+          "owner": {
+            "type": "picture",
+            "description": "User-owner transaction",
+            "exapmle": "61example001f722c0328f4"
+          },
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          }
+        },
+        "example": {
+          "type": true,
+          "date": "2021-11-10T00:00:00.000Z",
+          "amount": 45623,
+          "description": "haus",
+          "owner": "61example001f722c0328f4",
+          "_id": "618c21bda3example22c032900"
+        }
       }
     },
     "securitySchemes": {

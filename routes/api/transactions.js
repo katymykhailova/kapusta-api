@@ -16,12 +16,6 @@ router.post(
   controllerWrapper(ctrl.addTransaction),
 );
 
-router.delete(
-  '/:transactionId',
-  authenticate,
-  controllerWrapper(ctrl.removeTransaction),
-);
-
 router.put(
   '/:transactionId',
   authenticate,
@@ -29,10 +23,12 @@ router.put(
   controllerWrapper(ctrl.updateTransaction),
 );
 
-router.get(
-  '/',
+router.delete(
+  '/:transactionId',
   authenticate,
-  controllerWrapper(ctrl.getTransactionsByMonth),
+  controllerWrapper(ctrl.removeTransaction),
 );
+
+router.get('/', authenticate, controllerWrapper(ctrl.getTransactionsByMonth));
 
 module.exports = router;
