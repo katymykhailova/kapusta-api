@@ -22,7 +22,8 @@ const getTransactionsByMonth = async (req, res) => {
   const tActionsMonth = await Transaction.find(
     { owner: req.user._id, date: { $gte: fromDate, $lt: toDate } },
     { owner: 0, createdAt: 0, updatedAt: 0 },
-  ).sort({ date: 1 });
+  )
+    .populate({ path: 'category', select: '_id name ' }).sort({ date: 1 });
 
   sendSuccessRes(res, tActionsMonth);
 };
