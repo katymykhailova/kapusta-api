@@ -198,6 +198,24 @@
         }
       }
     },
+    "/api/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Google auth",
+        "parameters": [],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {}
+          },
+          "404": {
+            "description": "Bad request",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/categories": {
       "get": {
         "tags": ["Categories"],
