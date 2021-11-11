@@ -30,14 +30,14 @@ const getTransactionsByMonth = async (req, res) => {
     $group:
     {
       _id: { description: '$description', category: '$category', type: '$type' },
-      total_amount: { $sum: '$amount' }
+      total_amounts: { $sum: '$amount' }
     }
   },
   {
     $project: {
       _id: 0,
       group: '$_id',
-      total_amount: 1
+      total_amounts: 1
     }
   }
   ]);
