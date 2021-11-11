@@ -31,4 +31,6 @@ router.delete(
 
 router.get('/', authenticate, controllerWrapper(ctrl.getTransactionsByMonth));
 
+router.get('/charts', authenticate, controllerWrapper(ctrl.getTransactionsCharts));
+
 module.exports = router;
