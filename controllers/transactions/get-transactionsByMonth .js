@@ -1,6 +1,6 @@
 // for ex: http://localhost:3000/api/transactions?202101(YYYYMM)
 const { sendSuccessRes } = require('../../helpers');
-const { Transaction } = require('../../models');
+const { Transaction, Category } = require('../../models');
 const { BadRequest } = require('http-errors');
 
 const getTransactionsByMonth = async (req, res) => {
@@ -22,7 +22,8 @@ const getTransactionsByMonth = async (req, res) => {
   const tActionsMonth = await Transaction.find(
     { owner: req.user._id, date: { $gte: fromDate, $lt: toDate } },
     { owner: 0, createdAt: 0, updatedAt: 0 },
-  ).sort({ date: 1 });
+  )
+    .populate({ path: 'category', select: '_id name ' }).sort({ date: 1 });
 
   sendSuccessRes(res, tActionsMonth);
 };
