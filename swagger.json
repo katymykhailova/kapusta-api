@@ -304,7 +304,7 @@
         "security": [{ "Bearer": [] }],
         "parameters": [],
         "requestBody": {
-          "description": "Transactions's object additinal",
+          "description": "Transactions's object additinal, type true- incomes, type false - outcomes",
           "required": true,
           "content": {
             "application/json": {
@@ -377,6 +377,42 @@
           "400": {
             "description": "Bad request (invalid request body)",
             "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (Email or password is wrong)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "User transaction's delete",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "type": "string",
+            "description": "The id of transaction",
+            "example": "618c21bda3001f722c032900"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TAIdDeleteResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized (Email or password is wrong)",
@@ -835,7 +871,7 @@
             "example": "haus"
           },
           "owner": {
-            "type": "picture",
+            "type": "string",
             "description": "User-owner transaction",
             "exapmle": "61example001f722c0328f4"
           },
@@ -852,6 +888,18 @@
           "description": "haus",
           "owner": "61example001f722c0328f4",
           "_id": "618c21bda3example22c032900"
+        }
+      },
+      "TAIdDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Answer on delete"
+          }
+        },
+        "example": {
+          "message": "Success delete"
         }
       }
     },
