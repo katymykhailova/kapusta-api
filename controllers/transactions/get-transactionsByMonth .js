@@ -1,6 +1,6 @@
 // for ex: http://localhost:3000/api/transactions?202101(YYYYMM)
 const { sendSuccessRes } = require('../../helpers');
-const { Transaction, Category } = require('../../models');
+const { Transaction } = require('../../models');
 const { BadRequest } = require('http-errors');
 
 const getTransactionsByMonth = async (req, res) => {
