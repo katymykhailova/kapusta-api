@@ -14,6 +14,7 @@ const transactionSchema = Schema(
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
+      required: true,
     },
     amount: {
       type: Number,
@@ -22,6 +23,7 @@ const transactionSchema = Schema(
     description: {
       type: String,
       maxlength: 300,
+      required: true,
     },
     owner: {
       type: Schema.ObjectId,
@@ -37,6 +39,7 @@ const yupTransactionSchema = yup.object({
     .required('Обязательное поле')
     .positive('Только положительное число'),
   description: yup.string().required('Обязательное поле'),
+  category: yup.string().required('Обязательное поле'),
   date: yup.date().required('Обязательное поле'),
   type: yup.boolean().required('Обязательное поле'),
 });
