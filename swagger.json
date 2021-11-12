@@ -120,7 +120,8 @@
         "parameters": [],
         "responses": {
           "204": {
-            "description": "Successful"
+            "description": "Successful",
+            "content": {}
           },
           "401": {
             "description": "Unauthorized",

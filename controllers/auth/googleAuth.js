@@ -3,7 +3,6 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
 const findByEmail = require('./findUserByEmail');
-const updateToken = require('./updateToken');
 const { User } = require('../../models');
 
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -60,7 +59,6 @@ const googleRedirect = async (req, res) => {
   const { _id } = userGoogle;
   const payload = { _id };
   const token = jwt.sign(payload, SECRET_KEY);
-  updateToken(userGoogle.id, token);
   await User.findByIdAndUpdate(_id, { token });
   const newUser = await User.findOne({ token });
   res.redirect(`${process.env.FRONTEND_URL}/home`);
