@@ -52,10 +52,11 @@ const googleRedirect = async (req, res) => {
 
   const userGoogle = await findByEmail(userData.data.email);
   if (!userGoogle) {
-    res.redirect(`${process.env.FRONTEND_URL}/api/auth/signup`);
-    console.log(userData.data);
-    return userData.data;
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/api/auth/signup?email=${userData.data.email}&username=${userData.data.name}`,
+    );
   }
+
   const { _id } = userGoogle;
   const payload = { _id };
   const token = jwt.sign(payload, SECRET_KEY);
