@@ -34,10 +34,7 @@ const getTransactionsByMonth = async (req, res) => {
         date: { $gte: fromDate, $lt: toDate },
       },
     },
-    {
-      $unwind: '$category',
-    },
-    {
+        {
       $group: {
         _id: {
           description: '$description',
