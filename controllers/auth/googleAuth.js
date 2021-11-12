@@ -48,26 +48,33 @@ const googleRedirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   });
-  // console.log(userData.data);
 
-  const userGoogle = await findByEmail(userData.data.email);
-  if (!userGoogle) {
-    return res.redirect(
-      `${process.env.FRONTEND_URL}/api/auth/signup?email=${userData.data.email}&username=${userData.data.name}`,
-    );
+  const { email, name, picture, id } = userData.data;
+  const user = await findByEmail(email);
+
+  if (!user) {
+    const newUser = await User.create({
+      email,
+      username: name,
+      password: id,
+      avatar: picture,
+    });
+    const { _id } = newUser;
+    const payload = {
+      _id,
+    };
+    const token = jwt.sign(payload, SECRET_KEY);
+    await User.findByIdAndUpdate(_id, { token });
+    const userToken = await User.findOne({ token });
+    return res.redirect(`${process.env.FRONTEND_URL}?token=${userToken.token}`);
   }
 
-  const { _id } = userGoogle;
+  const { _id } = user;
   const payload = { _id };
   const token = jwt.sign(payload, SECRET_KEY);
-  await User.findByIdAndUpdate(_id, { token });
-  const newUser = await User.findOne({ token });
-  res.redirect(`${process.env.FRONTEND_URL}/home`);
-  console.log(newUser);
-  return newUser;
-  // return res.redirect(
-  //   `${process.env.FRONTEND_URL}?email=${userData.data.email}`,
-  // );
+  const userToken = await User.findByIdAndUpdate(_id, { token });
+  console.log(userToken);
+  res.redirect(`${process.env.FRONTEND_URL}?token=${userToken.token}`);
 };
 
 module.exports = { googleAuth, googleRedirect };
