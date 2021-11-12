@@ -120,7 +120,8 @@
         "parameters": [],
         "responses": {
           "204": {
-            "description": "Successful"
+            "description": "Successful",
+            "content": {}
           },
           "401": {
             "description": "Unauthorized",
@@ -193,6 +194,24 @@
           },
           "500": {
             "description": "Not correct value",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Google auth",
+        "parameters": [],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {}
+          },
+          "404": {
+            "description": "Bad request",
             "content": {}
           }
         }

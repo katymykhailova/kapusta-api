@@ -3,7 +3,8 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
 const findByEmail = require('./findUserByEmail');
-const updateToken = require('./updateToken');
+const { User } = require('../../models');
+
 const SECRET_KEY = process.env.SECRET_KEY;
 
 const googleAuth = async (req, res) => {
@@ -47,19 +48,22 @@ const googleRedirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   });
-  console.log(userData.data);
+  // console.log(userData.data);
 
-  const user = await findByEmail(userData.data.email);
-  if (!user) {
-    return res.redirect(`${process.env.FRONTEND_URL}/api/auth/signup`);
+  const userGoogle = await findByEmail(userData.data.email);
+  if (!userGoogle) {
+    res.redirect(`${process.env.FRONTEND_URL}/api/auth/signup`);
+    console.log(userData.data);
+    return userData.data;
   }
-  const payload = { id: user.id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-  await updateToken(user.id, token);
-  console.log(user.token);
-
-  return res.redirect(`${process.env.FRONTEND_URL}/home`);
-
+  const { _id } = userGoogle;
+  const payload = { _id };
+  const token = jwt.sign(payload, SECRET_KEY);
+  await User.findByIdAndUpdate(_id, { token });
+  const newUser = await User.findOne({ token });
+  res.redirect(`${process.env.FRONTEND_URL}/home`);
+  console.log(newUser);
+  return newUser;
   // return res.redirect(
   //   `${process.env.FRONTEND_URL}?email=${userData.data.email}`,
   // );
