@@ -23,6 +23,7 @@ const getYearByMonthAndType = async (req, res) => {
   ).sort({ date: 1 });
   const sums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   result.forEach(tAction => (sums[tAction.date.getMonth()] += tAction.amount));
+  // console.log(sums.reduce((a, b) => a + b));
   sendSuccessRes(res, sums);
 };
 module.exports = getYearByMonthAndType;

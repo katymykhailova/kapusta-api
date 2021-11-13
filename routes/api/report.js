@@ -12,7 +12,8 @@ const ctrl = require('../../controllers/report');
 router.get(
   '/',
   authenticate,
-  controllerWrapper(ctrl.getYearByMonthAndType),
+  // controllerWrapper(ctrl.getYearByMonthAndType),
+  controllerWrapper(ctrl.get6MonthReverse),
 );
 
 module.exports = router;
