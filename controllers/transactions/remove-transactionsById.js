@@ -12,7 +12,7 @@ const removeTransaction = async (req, res, next) => {
   }
   const { amount, type } = transaction;
 
-  await Transaction.findByIdAndDelete(transactionId);
+  const result = await Transaction.findByIdAndDelete(transactionId);
 
   const user = await User.findById(_id);
   if (!user) {
@@ -29,7 +29,7 @@ const removeTransaction = async (req, res, next) => {
     },
   );
 
-  sendSuccessRes(res, { message: 'Success delete' });
+  sendSuccessRes(res, { result, message: 'Success delete' });
 };
 
 module.exports = removeTransaction;

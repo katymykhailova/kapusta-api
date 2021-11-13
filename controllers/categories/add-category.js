@@ -11,11 +11,6 @@ const addCategory = async (req, res) => {
     throw new Conflict('Category already exist');
   }
 
-  // includedCategory.forEach(category => {
-  //   if (category.owner.toString() === _id.toString()) {
-  //     throw new Conflict('Contact already exist');
-  //   }
-  // });
   const result = await Category.create({ ...req.body });
   sendSuccessRes(res, { result }, 201);
 };

@@ -7,6 +7,10 @@ const categorySchema = Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: Boolean,
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true },
 );
@@ -14,8 +18,8 @@ const categorySchema = Schema(
 const yupCategorySchema = yup.object({
   name: yup
     .string()
-    .required('Обязательное поле')
-  ,
+    .required('Обязательное поле'),
+  type: yup.boolean().required('Обязательное поле'),
 });
 
 const Category = model('Category', categorySchema);
