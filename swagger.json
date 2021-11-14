@@ -770,6 +770,11 @@
             "description": "description operation",
             "example": "haus"
           },
+          "category": {
+            "type": "string",
+            "description": "category transactions",
+            "example": "618707f64d99133d9513d012"
+          },
           "date": {
             "type": "string",
             "description": "transaction's date",
@@ -784,6 +789,7 @@
         "example": {
           "amount": 45623,
           "description": "haus",
+          "category": "618707f64d99133d9513d012",
           "date": "2021-11-10",
           "type": true
         }
