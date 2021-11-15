@@ -22,7 +22,8 @@ const addTransaction = async (req, res) => {
     },
   );
 
-  const result = await Transaction.create({ ...req.body, owner: _id });
+  const newTransaction = await Transaction.create({ ...req.body, owner: _id });
+  const result = await Transaction.findById(newTransaction.id).populate({ path: 'category', select: '_id name ' });
   sendSuccessRes(res, { result }, 201);
 };
 
