@@ -17,7 +17,11 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 app.use(logger(formatsLogger));
 app.use(
   cors({
-    origin: '*',
+    origin: [
+      'https://ktm-kapusta-expense-tracker.netlify.app/',
+      'https://kapusta-api-project.herokuapp.com',
+      'http://localhost:3000',
+    ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }),
