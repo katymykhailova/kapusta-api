@@ -21,6 +21,7 @@ app.use(
       'https://ktm-kapusta-expense-tracker.netlify.app',
       'https://kapusta-api-project.herokuapp.com',
       'http://localhost:3000',
+      'https://www.google.com/'
     ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
