@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "https://kapusta-api-project.herokuapp.com" }],
   "tags": [
     {
       "name": "Auth",
@@ -797,6 +797,11 @@
       "TransactionsResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          },
           "type": {
             "type": "string",
             "description": "transaction's type",
@@ -806,6 +811,16 @@
             "type": "string",
             "description": "transaction's date",
             "example": "2021-11-10T00:00:00.000Z"
+          },
+          "category": {
+            "_id": {
+              "type": "string",
+              "description": "categories id"
+            },
+            "name": {
+              "type": "string",
+              "description": "categories name"
+            }
           },
           "amount": {
             "type": "number",
@@ -822,20 +837,19 @@
             "type": "picture",
             "description": "User-owner transaction",
             "exapmle": "61example001f722c0328f4"
-          },
-          "_id": {
-            "type": "string",
-            "description": "User's id",
-            "example": "987654321test"
           }
         },
         "example": {
-          "type": true,
-          "date": "2021-11-10T00:00:00.000Z",
-          "amount": 45623,
-          "description": "haus",
-          "owner": "61example001f722c0328f4",
-          "_id": "618c21bda3example22c032900"
+          "_id": "6193b6e1ea1ddfee78d3c6ed",
+          "type": false,
+          "date": "2021-11-11T00:00:00.000Z",
+          "category": {
+            "_id": "618c318a060b0523ba1305da",
+            "name": "Дань"
+          },
+          "amount": 1000000,
+          "description": "пппппрор",
+          "owner": "6193b3f9171b7f68e139ce8f"
         }
       },
       "TransactionsIdRequest": {
@@ -853,6 +867,16 @@
             "description": "description operation",
             "example": "haus"
           },
+          "category": {
+            "_id": {
+              "type": "string",
+              "description": "categories id"
+            },
+            "name": {
+              "type": "string",
+              "description": "categories name"
+            }
+          },
           "date": {
             "type": "string",
             "description": "transaction's date",
@@ -867,6 +891,7 @@
         "example": {
           "amount": 45623,
           "description": "haus",
+          "category": "618c318a060b0523ba1305da",
           "date": "2021-11-10",
           "type": true
         }
@@ -918,13 +943,59 @@
       "TAIdDeleteResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          },
+          "type": {
+            "type": "string",
+            "description": "transaction's type",
+            "example": "true"
+          },
+          "date": {
+            "type": "string",
+            "description": "transaction's date",
+            "example": "2021-11-10T00:00:00.000Z"
+          },
+          "category": {
+            "type": "string",
+            "description": "categories id"
+          },
+          "amount": {
+            "type": "number",
+            "description": "transaction's amount",
+            "format": "number",
+            "example": "45623"
+          },
+          "description": {
+            "type": "string",
+            "description": "description operation",
+            "example": "haus"
+          },
+          "owner": {
+            "type": "picture",
+            "description": "User-owner transaction",
+            "exapmle": "61example001f722c0328f4"
+          },
           "message": {
             "type": "string",
             "description": "Answer on delete"
           }
         },
         "example": {
-          "message": "Success delete"
+          "data": {
+            "result": {
+              "_id": "6193b6e1ea1ddfee78d3c6ed",
+              "type": true,
+              "date": "2021-11-10T00:00:00.000Z",
+              "category": "618c318a060b0523ba1305da",
+              "amount": 45623,
+              "description": "haus",
+              "owner": "6193b3f9171b7f68e139ce8f"
+            },
+            "message": "Success delete"
+          }
         }
       }
     },
