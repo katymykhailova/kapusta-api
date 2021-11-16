@@ -18,7 +18,7 @@ app.use(logger(formatsLogger));
 app.use(
   cors({
     origin: [
-      'https://ktm-kapusta-expense-tracker.netlify.app/',
+      'https://ktm-kapusta-expense-tracker.netlify.app',
       'https://kapusta-api-project.herokuapp.com',
       'http://localhost:3000',
     ],
