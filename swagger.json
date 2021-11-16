@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "Kapu$ta docs",
     "description": "Kapu$ta backend documentation",
     "license": {
@@ -274,6 +274,10 @@
           "401": {
             "description": "Unauthorized",
             "content": {}
+          },
+          "409": {
+            "description": "Already exist",
+            "content": {}
           }
         }
       }
@@ -340,6 +344,45 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (Email or password is wrong)",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "User transactions by months",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "YYYYMM",
+            "in": "query",
+            "description": "get transactions by months",
+            "schema": {
+              "type": "integer",
+              "minimum": 6,
+              "default": 202111,
+              "description": "yearmonth",
+              "required": "true"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsGetResponse"
                 }
               }
             }
@@ -716,10 +759,16 @@
             "type": "string",
             "description": "Categories name",
             "example": "Дань"
+          },
+          "type": {
+            "type": "boolean",
+            "description": "type incomes or outcomes",
+            "example": "Дань"
           }
         },
         "example": {
-          "name": "Дань"
+          "name": "Дань",
+          "type": true
         }
       },
       "AddCategoriesResponse": {
@@ -731,6 +780,11 @@
             "format": "name",
             "example": "User"
           },
+          "type": {
+            "type": "boolean",
+            "description": "type incomes or outcomes",
+            "example": "Дань"
+          },
           "_id": {
             "type": "string",
             "description": "Categories id",
@@ -738,8 +792,11 @@
           }
         },
         "example": {
-          "name": "дань",
-          "_id": "618ac4d6afd884baa98ac1d9"
+          "result": {
+            "name": "Дары данайцев",
+            "type": true,
+            "_id": "6193e189d6b34419124ca3c4"
+          }
         }
       },
       "ReportResponse": {
@@ -781,7 +838,7 @@
             "example": "2021-11-10T00:00:00.000Z"
           },
           "type": {
-            "type": "string",
+            "type": "boolean",
             "description": "transaction's type",
             "example": "true"
           }
@@ -996,6 +1053,121 @@
             },
             "message": "Success delete"
           }
+        }
+      },
+      "TransactionsGetResponse": {
+        "type": "object",
+        "properties": {
+          "tActions": [
+            {
+              "_id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "987654321test"
+              },
+              "type": {
+                "type": "string",
+                "description": "transaction's type",
+                "example": "true"
+              },
+              "date": {
+                "type": "string",
+                "description": "transaction's date",
+                "example": "2021-11-10T00:00:00.000Z"
+              },
+              "category": {
+                "_id": {
+                  "type": "string",
+                  "description": "categories id"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "categories name"
+                }
+              },
+              "amount": {
+                "type": "number",
+                "description": "transaction's amount",
+                "format": "number",
+                "example": "45623"
+              },
+              "description": {
+                "type": "string",
+                "description": "description operation",
+                "example": "haus"
+              }
+            }
+          ],
+          "sums": [
+            {
+              "total_amounts": {
+                "type": "number",
+                "description": "amount by description and category",
+                "format": "number",
+                "example": "45623"
+              },
+              "group": {
+                "description": {
+                  "type": "string",
+                  "description": "description operation",
+                  "example": "haus"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "categories id"
+                },
+                "type": {
+                  "type": "boolean",
+                  "description": "transaction's type",
+                  "example": "true"
+                }
+              }
+            }
+          ]
+        },
+        "example": {
+          "tActions": [
+            {
+              "_id": "6193b572171b7f68e139ce97",
+              "type": true,
+              "date": "2021-11-10T00:00:00.000Z",
+              "category": {
+                "_id": "618707f64d99133d9513d012",
+                "name": "Прочее"
+              },
+              "amount": 45623,
+              "description": "haus"
+            },
+            {
+              "_id": "6193b678171b7f68e139cea5",
+              "type": false,
+              "date": "2021-11-11T00:00:00.000Z",
+              "category": {
+                "_id": "618c318a060b0523ba1305da",
+                "name": "Дань"
+              },
+              "amount": 1000000,
+              "description": "пппппрор"
+            }
+          ],
+          "sums": [
+            {
+              "total_amounts": 1000000,
+              "group": {
+                "description": "пппппрор",
+                "category": "618c318a060b0523ba1305da",
+                "type": false
+              }
+            },
+            {
+              "total_amounts": 45623,
+              "group": {
+                "description": "haus",
+                "category": "618707f64d99133d9513d012",
+                "type": true
+              }
+            }
+          ]
         }
       }
     },
