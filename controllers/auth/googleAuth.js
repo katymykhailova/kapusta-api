@@ -19,7 +19,6 @@ const googleAuth = async (req, res) => {
     access_type: 'offline',
     prompt: 'consent',
   });
-  res.headers['Access-Control-Allow-Origin'] = 'https://www.google.com';
   return res.redirect(
     `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`,
   );
@@ -75,7 +74,6 @@ const googleRedirect = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY);
   await User.findByIdAndUpdate(_id, { token });
   const userToken = await User.findOne({ token });
-  res.headers['Access-Control-Allow-Origin'] = 'https://www.google.com';
   res.redirect(`${process.env.FRONTEND_URL}?token=${userToken.token}`);
 };
 
