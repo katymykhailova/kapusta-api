@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const app = require('../app');
 
-const { DB_HOST, PORT = 3000 } = process.env;
+const { DB_HOST, PORT = 3001 } = process.env;
 
 mGoose
   .connect(DB_HOST)
