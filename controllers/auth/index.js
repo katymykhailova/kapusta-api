@@ -6,6 +6,7 @@ const findByEmail = require('./findUserByEmail');
 const updateToken = require('./updateToken.js');
 const updateBalance = require('./updateBalanceById');
 const getProfile = require('./getProfileById');
+const getBalance = require('./getBalance');
 
 module.exports = {
   signup,
@@ -17,4 +18,5 @@ module.exports = {
   updateToken,
   updateBalance,
   getProfile,
+  getBalance
 };
