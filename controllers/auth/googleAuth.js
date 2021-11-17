@@ -57,8 +57,8 @@ const googleRedirect = async (req, res) => {
     const password = id;
     const hashPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
     const newUser = await User.create({
-      email,
       username: name,
+      email,
       password: hashPassword,
       avatar: picture,
     });
