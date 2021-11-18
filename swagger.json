@@ -197,6 +197,33 @@
             "content": {}
           }
         }
+      },
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get balance",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
       }
     },
     "/api/auth/google": {
@@ -730,6 +757,31 @@
           "code": 200,
           "data": {
             "balance": 45789
+          }
+        }
+      },
+      "GetBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 45789
+          },
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          }
+        },
+        "example": {
+          "status": "success",
+          "code": 200,
+          "data": {
+            "result": {
+              "_id": "6195529aa882a8817cb011b1",
+              "balance": 45789
+            }
           }
         }
       },
