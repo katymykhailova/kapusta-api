@@ -17,15 +17,15 @@ const userSchema = Schema(
       type: String,
       required: [true, 'Password is required'],
     },
-    token: {
-      type: String,
-      default: null,
-    },
     avatar: {
       type: String,
       default: function () {
         return gr.url(this.email, { s: '250' }, true);
       },
+    },
+    token: {
+      type: String,
+      default: null,
     },
     balance: {
       type: Number,

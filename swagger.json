@@ -197,6 +197,33 @@
             "content": {}
           }
         }
+      },
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get balance",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
       }
     },
     "/api/auth/google": {
@@ -323,7 +350,7 @@
     "/api/transactions": {
       "post": {
         "tags": ["Transactions"],
-        "summary": "User transactions",
+        "summary": "User transactions additional",
         "security": [{ "Bearer": [] }],
         "parameters": [],
         "requestBody": {
@@ -556,13 +583,19 @@
           }
         },
         "example": {
-          "username": "User",
-          "email": "user@test.com",
-          "password": "123t456e789st",
-          "token": null,
-          "balance": null,
-          "_id": "987654321test",
-          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+          "status": "success",
+          "code": 201,
+          "data": {
+            "result": {
+              "username": "User",
+              "email": "user@test.com",
+              "password": "123t456e789st",
+              "token": null,
+              "balance": null,
+              "_id": "987654321test",
+              "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+            }
+          }
         }
       },
       "AuthorizationRequest": {
@@ -625,13 +658,19 @@
           }
         },
         "example": {
-          "_id": "987654321test",
-          "username": "User",
-          "email": "user@test.com",
-          "password": "123t456e789st",
-          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
-          "balance": null,
-          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+          "status": "success",
+          "code": 201,
+          "data": {
+            "user": {
+              "_id": "987654321test",
+              "username": "User",
+              "email": "user@test.com",
+              "password": "123t456e789st",
+              "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
+              "balance": null,
+              "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+            }
+          }
         }
       },
       "CurrentUserResponse": {
@@ -677,13 +716,18 @@
           }
         },
         "example": {
-          "_id": "987654321test",
-          "username": "User",
-          "email": "user@test.com",
-          "password": "123t456e789st",
-          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
-          "balance": null,
-          "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+          "status": "success",
+          "code": 200,
+          "data": {
+            "result": {
+              "_id": "987654321test",
+              "username": "User",
+              "email": "user@test.com",
+              "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfNOyDMrBtPvK3dExr09Yta563k",
+              "balance": null,
+              "avatar": "https://s.gravatar.com/avatar/a6bee223811a3a269b8e3336a2a87cb2?s=250"
+            }
+          }
         }
       },
       "BalanceRequest": {
@@ -709,7 +753,36 @@
           }
         },
         "example": {
-          "balance": 45789
+          "status": "success",
+          "code": 200,
+          "data": {
+            "balance": 45789
+          }
+        }
+      },
+      "GetBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 45789
+          },
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "987654321test"
+          }
+        },
+        "example": {
+          "status": "success",
+          "code": 200,
+          "data": {
+            "result": {
+              "_id": "6195529aa882a8817cb011b1",
+              "balance": 45789
+            }
+          }
         }
       },
       "CategoriesResponse": {
@@ -730,26 +803,89 @@
             }
           }
         },
-        "example": [
-          {
-            "_id": "987654321test",
-            "name": "Продукты",
-            "createdAt": "2021-11-06T22:49:30.418Z",
-            "updatedAt": "2021-11-06T22:49:30.418Z"
-          },
-          {
-            "_id": "618707084d99133d9513cfeb",
-            "name": "Алкоголь",
-            "createdAt": "2021-11-06T22:51:52.332Z",
-            "updatedAt": "2021-11-06T22:51:52.332Z"
-          },
-          {
-            "_id": "618707614d99133d9513cffd",
-            "name": "Все для дома",
-            "createdAt": "2021-11-06T22:53:21.967Z",
-            "updatedAt": "2021-11-06T22:53:21.967Z"
+        "example": {
+          "status": "success",
+          "code": 200,
+          "data": {
+            "result": [
+              {
+                "_id": "6187067abf1429c9355ba882",
+                "name": "Продукты",
+                "type": false
+              },
+              {
+                "_id": "618707084d99133d9513cfeb",
+                "name": "Алкоголь",
+                "type": false
+              },
+              {
+                "_id": "618707234d99133d9513cfef",
+                "name": "Развлечение",
+                "type": false
+              },
+              {
+                "_id": "6187074a4d99133d9513cff5",
+                "name": "Здоровье",
+                "type": false
+              },
+              {
+                "_id": "618707524d99133d9513cff9",
+                "name": "Транспорт",
+                "type": false
+              },
+              {
+                "_id": "618707614d99133d9513cffd",
+                "name": "Все для дома",
+                "type": false
+              },
+              {
+                "_id": "618707744d99133d9513d001",
+                "name": "Техника",
+                "type": false
+              },
+              {
+                "_id": "618707cc4d99133d9513d006",
+                "name": "Коммуналка, связь",
+                "type": false
+              },
+              {
+                "_id": "618707e14d99133d9513d00a",
+                "name": "Спорт, хобби",
+                "type": false
+              },
+              {
+                "_id": "618707ec4d99133d9513d00e",
+                "name": "Образование",
+                "type": false
+              },
+              {
+                "_id": "618707f64d99133d9513d012",
+                "name": "Прочее",
+                "type": false
+              },
+              {
+                "_id": "618799dbe9da3324417fb10a",
+                "name": "ЗП",
+                "type": true
+              },
+              {
+                "_id": "618799fae9da3324417fb10f",
+                "name": "Доп. доход",
+                "type": true
+              },
+              {
+                "_id": "618c318a060b0523ba1305da",
+                "name": "Дань",
+                "type": true
+              },
+              {
+                "_id": "6193e189d6b34419124ca3c4",
+                "name": "Дары данайцев",
+                "type": true
+              }
+            ]
           }
-        ]
+        }
       },
       "AddCategoriesRequest": {
         "type": "object",
@@ -792,10 +928,16 @@
           }
         },
         "example": {
-          "result": {
-            "name": "Дары данайцев",
-            "type": true,
-            "_id": "6193e189d6b34419124ca3c4"
+          "status": "success",
+          "code": 201,
+          "data": {
+            "result": {
+              "name": "Дары данайцев",
+              "type": true,
+              "_id": "61955dee34299b1858517ed1",
+              "createdAt": "2021-11-17T19:54:22.804Z",
+              "updatedAt": "2021-11-17T19:54:22.804Z"
+            }
           }
         }
       },
@@ -810,7 +952,11 @@
             }
           }
         },
-        "example": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        "example": {
+          "status": "success",
+          "code": 200,
+          "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }
       },
       "TransactionsRequest": {
         "type": "object",
@@ -897,16 +1043,22 @@
           }
         },
         "example": {
-          "_id": "6193b6e1ea1ddfee78d3c6ed",
-          "type": false,
-          "date": "2021-11-11T00:00:00.000Z",
-          "category": {
-            "_id": "618c318a060b0523ba1305da",
-            "name": "Дань"
-          },
-          "amount": 1000000,
-          "description": "пппппрор",
-          "owner": "6193b3f9171b7f68e139ce8f"
+          "status": "success",
+          "code": 201,
+          "data": {
+            "result": {
+              "type": false,
+              "date": "2021-11-11T00:00:00.000Z",
+              "category": {
+                "_id": "618c318a060b0523ba1305da",
+                "name": "Дань"
+              },
+              "amount": 1000000,
+              "description": "travel on the 7 seas",
+              "owner": "6193b3f9171b7f68e139ce8f",
+              "_id": "6193b6e1ea1ddfee78d3c6ed"
+            }
+          }
         }
       },
       "TransactionsIdRequest": {
@@ -956,6 +1108,11 @@
       "TransactionsIdResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "transactions's id",
+            "example": "987654321test"
+          },
           "type": {
             "type": "string",
             "description": "transaction's type",
@@ -981,20 +1138,22 @@
             "type": "string",
             "description": "User-owner transaction",
             "exapmle": "61example001f722c0328f4"
-          },
-          "_id": {
-            "type": "string",
-            "description": "User's id",
-            "example": "987654321test"
           }
         },
         "example": {
-          "type": true,
-          "date": "2021-11-10T00:00:00.000Z",
-          "amount": 45623,
-          "description": "haus",
-          "owner": "61example001f722c0328f4",
-          "_id": "618c21bda3example22c032900"
+          "status": "success",
+          "code": 200,
+          "data": {
+            "result": {
+              "_id": "618c21bda3example22c032900",
+              "type": true,
+              "date": "2021-11-10T00:00:00.000Z",
+              "category": "618707f64d99133d9513d012",
+              "amount": 45623,
+              "description": "haus",
+              "owner": "61example001f722c0328f4"
+            }
+          }
         }
       },
       "TAIdDeleteResponse": {
@@ -1041,6 +1200,8 @@
           }
         },
         "example": {
+          "status": "success",
+          "code": 200,
           "data": {
             "result": {
               "_id": "6193b6e1ea1ddfee78d3c6ed",
@@ -1126,48 +1287,52 @@
           ]
         },
         "example": {
-          "tActions": [
-            {
-              "_id": "6193b572171b7f68e139ce97",
-              "type": true,
-              "date": "2021-11-10T00:00:00.000Z",
-              "category": {
-                "_id": "618707f64d99133d9513d012",
-                "name": "Прочее"
+          "status": "success",
+          "code": 200,
+          "data": {
+            "tActions": [
+              {
+                "_id": "6193b572171b7f68e139ce97",
+                "type": true,
+                "date": "2021-11-10T00:00:00.000Z",
+                "category": {
+                  "_id": "618707f64d99133d9513d012",
+                  "name": "Прочее"
+                },
+                "amount": 45623,
+                "description": "haus"
               },
-              "amount": 45623,
-              "description": "haus"
-            },
-            {
-              "_id": "6193b678171b7f68e139cea5",
-              "type": false,
-              "date": "2021-11-11T00:00:00.000Z",
-              "category": {
-                "_id": "618c318a060b0523ba1305da",
-                "name": "Дань"
+              {
+                "_id": "6193b678171b7f68e139cea5",
+                "type": false,
+                "date": "2021-11-11T00:00:00.000Z",
+                "category": {
+                  "_id": "618c318a060b0523ba1305da",
+                  "name": "Дань"
+                },
+                "amount": 1000000,
+                "description": "пппппрор"
+              }
+            ],
+            "sums": [
+              {
+                "total_amounts": 1000000,
+                "group": {
+                  "description": "пппппрор",
+                  "category": "618c318a060b0523ba1305da",
+                  "type": false
+                }
               },
-              "amount": 1000000,
-              "description": "пппппрор"
-            }
-          ],
-          "sums": [
-            {
-              "total_amounts": 1000000,
-              "group": {
-                "description": "пппппрор",
-                "category": "618c318a060b0523ba1305da",
-                "type": false
+              {
+                "total_amounts": 45623,
+                "group": {
+                  "description": "haus",
+                  "category": "618707f64d99133d9513d012",
+                  "type": true
+                }
               }
-            },
-            {
-              "total_amounts": 45623,
-              "group": {
-                "description": "haus",
-                "category": "618707f64d99133d9513d012",
-                "type": true
-              }
-            }
-          ]
+            ]
+          }
         }
       }
     },
